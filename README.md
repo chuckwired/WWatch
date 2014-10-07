@@ -1,4 +1,4 @@
 time-in
 =======
 
-Pebble application written in C as a custom stopwatch for the gym.
+Pebble application written in C as a custom, personally made stopwatch for the gym.
