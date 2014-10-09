@@ -1,0 +1,17 @@
+{
+  "uuid": "777699fe-8867-4447-8787-4728b08ef1cf",
+  "shortName": "TIME-stopwatch",
+  "longName": "TIME-stopwatch",
+  "companyName": "MakeAwesomeHappen",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
