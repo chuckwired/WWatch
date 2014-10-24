@@ -1,10 +1,10 @@
 {
   "uuid": "777699fe-8867-4447-8787-4728b08ef1cf",
-  "shortName": "TIME-stopwatch",
-  "longName": "TIME-stopwatch",
-  "companyName": "MakeAwesomeHappen",
+  "shortName": "s-TIME",
+  "longName": "stopwatch-TIME",
+  "companyName": "ChuckWired",
   "versionCode": 1,
-  "versionLabel": "1.0",
+  "versionLabel": "0.1",
   "watchapp": {
     "watchface": false
   },
