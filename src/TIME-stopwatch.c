@@ -1,18 +1,23 @@
 #include <pebble.h>
 
 static Window *window;
-static TextLayer *minutes_display, *seconds_display, *ms_display;
+static TextLayer *minutes_display, *ms_display;
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  
+	//Start/stop button
 }
 
+/*==========================
+Reset button implementation */
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  
+	//Step 1: Reset displays
+	text_layer_set_text(minutes_display, "00:00");
+	text_layer_set_text(ms_display, "0");
+	//Step 2: Reset timing mechanism
 }
 
 static void click_config_provider(void *context) {
@@ -25,26 +30,21 @@ static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-  minutes_display = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w, 50 } });
-  text_layer_set_text(minutes_display, "XX");
+  minutes_display = text_layer_create((GRect) { .origin = { 0, 25 }, .size = { bounds.size.w, 50 } });
+  text_layer_set_text(minutes_display, "59:59");
   text_layer_set_text_alignment(minutes_display, GTextAlignmentCenter);
-  text_layer_set_font(minutes_display, fonts_get_system_font("RESOURCE_ID_BITHAM_42_BOLD"));
+  text_layer_set_font(minutes_display, fonts_get_system_font("RESOURCE_ID_ROBOTO_BOLD_SUBSET_49"));
   layer_add_child(window_layer, text_layer_get_layer(minutes_display));
   
-  seconds_display = text_layer_create((GRect) { .origin = { 0, 80 }, .size = { bounds.size.w, 20 } });
-  text_layer_set_text(seconds_display, "XX.");
-  text_layer_set_text_alignment(seconds_display, GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(seconds_display));
-  
-  ms_display = text_layer_create((GRect) { .origin = { 82, 80 }, .size = { bounds.size.w, 20 } });
-  text_layer_set_text(ms_display, "x");
+  ms_display = text_layer_create((GRect) { .origin = { 110, 75 }, .size = { bounds.size.w, 35 } });
+  text_layer_set_text(ms_display, "9");
+  text_layer_set_font(ms_display, fonts_get_system_font("RESOURCE_ID_BITHAM_30_BLACK"));
   //text_layer_set_text_alignment(ms_display, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(ms_display));
 }
 
 static void window_unload(Window *window) {
   text_layer_destroy(minutes_display);
-  text_layer_destroy(seconds_display);
   text_layer_destroy(ms_display);
 }
 
