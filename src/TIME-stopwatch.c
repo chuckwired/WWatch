@@ -1,27 +1,52 @@
 #include <pebble.h>
+#define MFALSE 0
+#define MTRUE 1
 
 static Window *window;
 static TextLayer *minutes_display, *ms_display;
+//Timing Variables
+static AppTimer *stopwatch_timer;
+static int *seconds_lapsed;
+static time_t *time_started;
+static int stopwatch_begun = MFALSE;
 
-static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  
+static void start_stop_timer() {
+	if(stopwatch_begun == MFALSE){
+		//take existing time, if any, and continue
+		text_layer_set_text(minutes_display, "12:34");
+		stopwatch_begun = MTRUE;
+	}
+	else{
+		//record elapsed time and stop
+		text_layer_set_text(minutes_display, "43:21");
+		stopwatch_begun = MFALSE;
+	}
 }
 
+static void reset_timer() {
+	//Step 1: Reset displays
+	text_layer_set_text(minutes_display, "00:00");
+	text_layer_set_text(ms_display, "0");
+	//Step 2: Reset timing mechanisms
+	seconds_lapsed = 0;
+	stopwatch_begun = MFALSE;
+	time_started = NULL;
+}
+
+/*==========================
+Start/Stop button implementation */
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 	//Start/stop button
+	start_stop_timer();
 }
 
 /*==========================
 Reset button implementation */
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-	//Step 1: Reset displays
-	text_layer_set_text(minutes_display, "00:00");
-	text_layer_set_text(ms_display, "0");
-	//Step 2: Reset timing mechanism
+	reset_timer();
 }
 
 static void click_config_provider(void *context) {
-  window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
 }
