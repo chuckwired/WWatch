@@ -1,10 +1,10 @@
 {
   "uuid": "777699fe-8867-4447-8787-4728b08ef1cf",
-  "shortName": "s-TIME",
-  "longName": "stopwatch-TIME",
+  "shortName": "WWatch",
+  "longName": "Workout Stopwatch",
   "companyName": "ChuckWired",
   "versionCode": 1,
-  "versionLabel": "0.1",
+  "versionLabel": "0.2",
   "watchapp": {
     "watchface": false
   },
@@ -12,6 +12,6 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [ ]
   }
 }
