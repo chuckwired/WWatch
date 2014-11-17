@@ -24,11 +24,12 @@ Maybe features;
  - Milliseconds display
 
 /*==========  
- Changelog */  
+**Changelog** */  
 v0.3  
  - App icon updated
  - WILL remove milisecond counter
  - WILL implement data persistence  
+
 v0.2  
  - Timing mechanism implemented
  
