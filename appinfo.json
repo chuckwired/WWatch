@@ -4,7 +4,7 @@
   "longName": "Workout Stopwatch",
   "companyName": "ChuckWired",
   "versionCode": 1,
-  "versionLabel": "0.2",
+  "versionLabel": "0.3",
   "watchapp": {
     "watchface": false
   },
@@ -12,6 +12,13 @@
     "dummy": 0
   },
   "resources": {
-    "media": [ ]
+    "media": [
+		{
+		"menuIcon": true,
+		"type": "png",
+		"name": "IMAGE_MENU_ICON",
+		"file": "images/appicon.png"
+		}
+    ]
   }
 }
