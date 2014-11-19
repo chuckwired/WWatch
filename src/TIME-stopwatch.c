@@ -10,10 +10,28 @@ static TextLayer *minutes_display;
 static AppTimer *stopwatch_timer;
 static int total_lapsed;
 static int stopwatch_begun = MFALSE;
+static int session_history[4];
 
 //TODO: Function to display history
 
-//TODO: Function to display time on watch
+/*=================
+Core functionality */
+static void reset_timer() {
+	//Step 1: Record history
+	
+	//Step 2: Reset timing mechanisms
+	app_timer_cancel(stopwatch_timer);
+	total_lapsed = 0;
+	stopwatch_begun = MFALSE;
+	//Step 3: Reset displays
+	text_layer_set_text(minutes_display, "00:00");
+}
+
+static void check_overtime(){
+	if (total_lapsed >= 3600){reset_timer();}
+}
+
+//Display time on watch
 static void display_time_elapsed(){
 	//Calculate times
 	int minutes_lapsed = total_lapsed/60;
@@ -27,6 +45,7 @@ static void display_time_elapsed(){
 static void timer_callback(){
 	//Increment seconds
 	total_lapsed += 1;
+	check_overtime();
 	
 	//Display time
 	display_time_elapsed();
@@ -48,17 +67,6 @@ static void start_stop_timer() {
 		stopwatch_begun = MFALSE;
 		app_timer_cancel(stopwatch_timer);
 	}
-}
-
-static void reset_timer() {
-	//Step 1: Record history
-	
-	//Step 2: Reset timing mechanisms
-	app_timer_cancel(stopwatch_timer);
-	total_lapsed = 0;
-	stopwatch_begun = MFALSE;
-	//Step 3: Reset displays
-	text_layer_set_text(minutes_display, "00:00");
 }
 
 /*==========================
