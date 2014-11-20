@@ -10,20 +10,21 @@ static TextLayer *minutes_display;
 static AppTimer *stopwatch_timer;
 static int total_lapsed;
 static int stopwatch_begun = MFALSE;
-static int session_history[4];
+static int session_history[5];
 
 //TODO: Function to display history
 
 /*=================
 Core functionality */
 static void reset_timer() {
-	//Step 1: Record history
-	
-	//Step 2: Reset timing mechanisms
+	//Step 1: Stop and record history
 	app_timer_cancel(stopwatch_timer);
+	if(session_history[0] < 1 || !session_history[0]){session_history[0] = 1;}
+	session_history[session_history[0]] = total_lapsed;
+	session_history[0] += 1;
+	//Step 2: Reset timing mechanisms
 	total_lapsed = 0;
 	stopwatch_begun = MFALSE;
-	//Step 3: Reset displays
 	text_layer_set_text(minutes_display, "00:00");
 }
 
