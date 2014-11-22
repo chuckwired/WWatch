@@ -4,8 +4,11 @@
 //Persistence Keys
 #define TOTAL_LAPSED_KEY 25
 
+//UI
 static Window *window;
 static TextLayer *minutes_display;
+static GBitmap *star_bitmap, *refresh_bitmap;
+static BitmapLayer *star_layer, *refresh_layer;
 //Timing Variables
 static AppTimer *stopwatch_timer;
 static int total_lapsed;
@@ -97,16 +100,28 @@ static void click_config_provider(void *context) {
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
-
-  minutes_display = text_layer_create((GRect) { .origin = { 0, 30 }, .size = { bounds.size.w, 50 } });
+  
+  minutes_display = text_layer_create((GRect) { .origin = { 0, 40 }, .size = { bounds.size.w, 50 } });
   text_layer_set_text(minutes_display, "00:00");
   text_layer_set_text_alignment(minutes_display, GTextAlignmentCenter);
   text_layer_set_font(minutes_display, fonts_get_system_font("RESOURCE_ID_ROBOTO_BOLD_SUBSET_49"));
   layer_add_child(window_layer, text_layer_get_layer(minutes_display));
+  
+  star_bitmap = gbitmap_create_with_resource(RESOURCE_ID_STAR_ICON);
+  star_layer = bitmap_layer_create(GRect(100, 0, 48, 48));
+  bitmap_layer_set_bitmap(star_layer, star_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(star_layer));
+  
+  refresh_bitmap = gbitmap_create_with_resource(RESOURCE_ID_REFRESH_ICON);
+  refresh_layer = bitmap_layer_create(GRect(100, 100, 48, 48));
+  bitmap_layer_set_bitmap(refresh_layer, refresh_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(refresh_layer));
 }
 
 static void window_unload(Window *window) {
   text_layer_destroy(minutes_display);
+  bitmap_layer_destroy(star_layer); bitmap_layer_destroy(refresh_layer);
+  gbitmap_destroy(star_bitmap); gbitmap_destroy(refresh_bitmap);
 }
 
 static void init(void) {
