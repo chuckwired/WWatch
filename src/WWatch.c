@@ -58,9 +58,7 @@ static void reset_timer() {
 	text_layer_set_text(minutes_display, "00:00");
 }
 
-static void check_overtime(){
-	if (total_lapsed >= 3600){push_record(); reset_timer();}
-}
+static void check_overtime(){if (total_lapsed >= 3600){push_record(); reset_timer();}}
 
 //Display time on watch
 static void display_time_elapsed(){
@@ -74,11 +72,9 @@ static void display_time_elapsed(){
 }
 
 static void timer_callback(){
-	//Increment seconds
+	//Increment and display
 	total_lapsed += 1;
 	check_overtime();
-	
-	//Display time
 	display_time_elapsed();
 	
 	//If still timing, call self again
@@ -92,8 +88,7 @@ static void start_stop_timer() {
 		//Start timing and kickoff timer
 		stopwatch_begun = MTRUE;
 		stopwatch_timer = app_timer_register(600, (AppTimerCallback) timer_callback, NULL);
-	}
-	else{
+	} else{
 		//Stop recording and cancel timer
 		stopwatch_begun = MFALSE;
 		app_timer_cancel(stopwatch_timer);
