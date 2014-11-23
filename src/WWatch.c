@@ -11,8 +11,8 @@ static TextLayer *minutes_display, *history_display;
 static GBitmap *star_bitmap, *refresh_bitmap;
 static BitmapLayer *star_layer, *refresh_layer;
 //Timing Variables
-static AppTimer *stopwatch_timer, *history_timer;
-static int total_lapsed;
+static AppTimer *stopwatch_timer;
+static int total_lapsed, history_showing = MFALSE;
 static int stopwatch_begun = MFALSE;
 static int session_history[5];
 
@@ -25,13 +25,8 @@ static void push_record(){
 	session_history[0] = total_lapsed;
 }
 
-static void display_records_callback(){
-	if(history_display != NULL){text_layer_destroy(history_display);}
-	app_timer_cancel(history_timer);
-}
-
 static void display_records(){
-	app_timer_cancel(history_timer);
+	if(history_showing == MTRUE){text_layer_destroy(history_display); history_showing = MFALSE; return;}
 	Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
 
@@ -48,7 +43,7 @@ static void display_records(){
     text_layer_set_text_alignment(minutes_display, GTextAlignmentCenter);
     text_layer_set_font(history_display, fonts_get_system_font("RESOURCE_ID_DROID_SERIF_28_BOLD"));
     layer_add_child(window_layer, text_layer_get_layer(history_display));
-	history_timer = app_timer_register(3000, (AppTimerCallback) display_records_callback, NULL);
+	history_showing = MTRUE;
 }
 
 /*=================
