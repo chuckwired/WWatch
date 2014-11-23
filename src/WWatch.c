@@ -156,6 +156,9 @@ static void init(void) {
   
   //Restore state
   total_lapsed = persist_exists(TOTAL_LAPSED_KEY) ? persist_read_int(TOTAL_LAPSED_KEY) : 0;
+	for(int i = 0; i < 5; i++){
+		session_history[i] = persist_exists(HISTORY_KEY + i) ? persist_read_int(HISTORY_KEY + i) : 0;
+	}
   
   window_stack_push(window, animated);
   display_time_elapsed();
@@ -165,6 +168,10 @@ static void deinit(void) {
 	//Persist state
 	if(persist_exists(TOTAL_LAPSED_KEY)){persist_delete(TOTAL_LAPSED_KEY);}
 	persist_write_int(TOTAL_LAPSED_KEY, total_lapsed);
+	for(int i = 0; i < 5; i++){
+		if(persist_exists(HISTORY_KEY + i)){persist_delete(HISTORY_KEY + i);}
+		persist_write_int(HISTORY_KEY + i, session_history[i]);
+	}
 	window_destroy(window);
 }
 
