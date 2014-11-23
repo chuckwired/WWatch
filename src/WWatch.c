@@ -3,28 +3,60 @@
 #define MTRUE 1
 //Persistence Keys
 #define TOTAL_LAPSED_KEY 25
+#define HISTORY_KEY 26
 
 //UI
 static Window *window;
-static TextLayer *minutes_display;
+static TextLayer *minutes_display, *history_display;
 static GBitmap *star_bitmap, *refresh_bitmap;
 static BitmapLayer *star_layer, *refresh_layer;
 //Timing Variables
-static AppTimer *stopwatch_timer;
+static AppTimer *stopwatch_timer, *history_timer;
 static int total_lapsed;
 static int stopwatch_begun = MFALSE;
 static int session_history[5];
 
-//TODO: Function to display history
+/*====================
+History functionality */
+static void push_record(){
+	if(total_lapsed == 0){ return;}
+	for(int i = 0; i < 5; i++){ if(!session_history[i]){session_history[i] = 0;} }
+	for(int i = 4; i > 0; i--){session_history[i] = session_history[i-1];}
+	session_history[0] = total_lapsed;
+}
+
+static void display_records_callback(){
+	if(history_display != NULL){text_layer_destroy(history_display);}
+	app_timer_cancel(history_timer);
+}
+
+static void display_records(){
+	app_timer_cancel(history_timer);
+	Layer *window_layer = window_get_root_layer(window);
+    GRect bounds = layer_get_bounds(window_layer);
+
+	history_display = text_layer_create((GRect) { .origin = { 5, 0 }, .size = { bounds.size.w, 180 } });
+	text_layer_set_overflow_mode(history_display, GTextOverflowModeWordWrap);
+	static char hdisplay[45] = "";
+	snprintf(hdisplay, 45, "1) %02i:%02i\n2) %02i:%02i\n3) %02i:%02i\n4) %02i:%02i\n5) %02i:%02i", 
+		session_history[0] / 60, session_history[0] % 60,
+		session_history[1] / 60, session_history[1] % 60,
+		session_history[2] / 60, session_history[2] % 60,
+		session_history[3] / 60, session_history[3] % 60,
+		session_history[4] / 60, session_history[4] % 60);
+	text_layer_set_text(history_display, hdisplay);
+    text_layer_set_text_alignment(minutes_display, GTextAlignmentCenter);
+    text_layer_set_font(history_display, fonts_get_system_font("RESOURCE_ID_DROID_SERIF_28_BOLD"));
+    layer_add_child(window_layer, text_layer_get_layer(history_display));
+	history_timer = app_timer_register(3000, (AppTimerCallback) display_records_callback, NULL);
+}
 
 /*=================
 Core functionality */
 static void reset_timer() {
 	//Step 1: Stop and record history
 	app_timer_cancel(stopwatch_timer);
-	if(session_history[0] < 1 || !session_history[0]){session_history[0] = 1;}
-	session_history[session_history[0]] = total_lapsed;
-	session_history[0] += 1;
+	push_record();
 	//Step 2: Reset timing mechanisms
 	total_lapsed = 0;
 	stopwatch_begun = MFALSE;
@@ -32,7 +64,7 @@ static void reset_timer() {
 }
 
 static void check_overtime(){
-	if (total_lapsed >= 3600){reset_timer();}
+	if (total_lapsed >= 3600){push_record(); reset_timer();}
 }
 
 //Display time on watch
@@ -74,19 +106,13 @@ static void start_stop_timer() {
 }
 
 /*==========================
-Records button implementation */
+Controls implementation */
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-	;
+	display_records();
 }
-
-/*==========================
-Start/Stop button implementation */
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 	start_stop_timer();
 }
-
-/*==========================
-Reset button implementation */
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
 	reset_timer();
 }
@@ -133,7 +159,7 @@ static void init(void) {
   });
   const bool animated = true;
   
-  //Restore time lapsed
+  //Restore state
   total_lapsed = persist_exists(TOTAL_LAPSED_KEY) ? persist_read_int(TOTAL_LAPSED_KEY) : 0;
   
   window_stack_push(window, animated);
@@ -141,7 +167,7 @@ static void init(void) {
 }
 
 static void deinit(void) {
-	//Save lapsed time
+	//Persist state
 	if(persist_exists(TOTAL_LAPSED_KEY)){persist_delete(TOTAL_LAPSED_KEY);}
 	persist_write_int(TOTAL_LAPSED_KEY, total_lapsed);
 	window_destroy(window);
