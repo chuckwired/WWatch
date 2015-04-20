@@ -1,6 +1,6 @@
 Workout Stopwatch
 =======
-fisdljfsdfj
+
 **Abstract**  
 WWatch (Workout Stopwatch) is a Pebble application written in C as a custom, personally made stopwatch for keeping track of your rest periods at the gym. If you want a clean, clear large display of time elapsed for less than an hour then this is the PebbleApp for you.
 
