@@ -1,4 +1,4 @@
-sdfjsdkfsdWorkout Stopwatch
+Workout Stopwatch
 =======
 fisdljfsdfj
 **Abstract**  
