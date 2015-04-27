@@ -17,8 +17,7 @@ This software is distributed under the GNU General Public License.
  - Down button: reset the timer  
 
 Upcoming features:
- - Labels for controls  
- - Display last 5 runs
+ - Hour compatibility
 
 Maybe features;  
  - Larger, custom font
@@ -29,7 +28,7 @@ v0.3
  - App icon updated
  - Removed milisecond counter
  - Implemented data persistence  
- - WILL Display last 5 history function  
+ - Display last 5 history function  
 
 v0.2  
  - Timing mechanism implemented
