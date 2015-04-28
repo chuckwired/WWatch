@@ -12,12 +12,12 @@ WWatch (Workout Stopwatch) is a Pebble application written in C as a custom, per
 This software is distributed under the GNU General Public License.  
 
 **Controls**  
- - Up button: start and stop the timer  
+ - Up button: display history
+ - Select button: start/stop timer  
  - Down button: reset the timer  
 
 Upcoming features:
- - Data persistence
- - Labels for controls  
+ - Hour compatibility
 
 Maybe features;  
  - Larger, custom font
@@ -26,8 +26,9 @@ Maybe features;
 **Changelog**  
 v0.3  
  - App icon updated
- - WILL remove milisecond counter
- - WILL implement data persistence  
+ - Removed milisecond counter
+ - Implemented data persistence  
+ - Display last 5 history function  
 
 v0.2  
  - Timing mechanism implemented
