@@ -58,7 +58,7 @@ static void reset_timer() {
 	text_layer_set_text(minutes_display, "00:00");
 }
 
-static void check_overtime(){if (total_lapsed >= 3600){push_record(); reset_timer();}}
+static void check_overtime(){if (total_lapsed >= 3600){reset_timer();}}
 
 //Display time on watch
 static void display_time_elapsed(){
